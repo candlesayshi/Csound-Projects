@@ -45,7 +45,7 @@ void scaleDeg(float root, float dur, float krate){
   float ynoise = random(10);
   float znoise = random(10);
 
-  
+  // build the scale (natural minor in just intonation)
   notes[0] = root;
   notes[1] = root * (9.0/8.0);
   notes[2] = root * (5.0/4.0);
