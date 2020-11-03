@@ -104,15 +104,6 @@ class csdWriter {
     }
   }
   
-  // function for a personal project, but adds a set of global parameters
-  void simple_oscs_ga(int len){
-    csd.println();
-    for(int i = 1; i <= len; i++){
-      csd.println("ga" + i + " init 0");
-    }
-    csd.println();
-  }
-  
   // start a new instrument
   void new_instr(int inst){
     if(orc_written){
@@ -177,6 +168,41 @@ class csdWriter {
     } else {
       println("Score not completed.");
     }
+  }
+  
+   /*********************** functions for a personal project **************************/
+  void simple_oscs_gk(int len){
+    csd.println();
+    csd.println(";global controls for the oscillators' amplitudes");
+    for(int i = 1; i <= len; i++){
+      csd.println("gk" + i + " init 0");
+    }
+    csd.println();
+  }
+  void simple_drone_oscs(int num, float freq){
+    if(inst_in_progress){
+      csd.println("aout  oscil  " + "gk" + num +", " + freq);
+      csd.println("  out  aout");
+      csd.println();
+    } else {
+      println("You have to start an instrument first.");
+    }
+  }
+  void control_inst(int num){
+    csd.println();
+    csd.println(";a single instrument that can route the incoming control values to the oscs");
+    for(int i = 1; i <= num; i++){
+      csd.println("gk" + i + " = " + "p" + (i + 3));
+    }
+    csd.println();
+  }
+  void add_oscs_to_score(int num, float len){
+    csd.println();
+    csd.println(";oscillators play over the whole piece and parameters are adjusted by the other score statements");
+    for(int i = 1; i <= num; i++){
+      csd.println("i" + num + " " + "0 " + len);
+    }
+    csd.println();
   }
   
 }
