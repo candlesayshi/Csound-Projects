@@ -46,7 +46,8 @@ class csdWriter {
       options = (String[])append(options,new_opt);
     }
   }
-    
+
+  // start the orchestra section of the file
   void start_orc(){
     if(global_params_written){
       println("The orchestra header has already been written to the file.");
@@ -62,11 +63,13 @@ class csdWriter {
     }
   }
   
+  // end the orchestra section
   void end_orc(){
     csd.println("</CsInstruments>");
     orc_written = true;
   }
   
+  // set the number of output channels
   void set_channels(int nchans){
     if(global_params_written){
       println("Global parameters have already been written to the file and can no longer be changed.");
@@ -80,6 +83,7 @@ class csdWriter {
     }
   }
   
+  // set the sample rate
   void set_sample_rate(int srate){
     if(global_params_written){
       println("Global parameters have already been written to the file and can no longer be changed.");
@@ -92,6 +96,7 @@ class csdWriter {
     }
   }
   
+  // set the number of samples that are in a control period
   void set_ksmps(int ksmps){
     if(global_params_written){
       println("Global parameters have already been written to the file and can no longer be changed.");
@@ -145,6 +150,7 @@ class csdWriter {
       println("Orchestra has not been written yet.");
     }
   }
+  
   // end the score section
   void end_score(){
     csd.println("</CsScore>");
