@@ -9,7 +9,7 @@ ksmps 	= 32
 nchnls 	= 1
 0dbfs 	= 1
 
-ginote = 220
+ginote = 110
 
 instr 1
 
@@ -19,10 +19,10 @@ k1	oscil	0.1, inote/1000
 a1	oscil 	0.05, inote
 a2	distort 	a1, 0.1 + k1, 1
 a3 	exciter 	(a2+a1)/2, inote/2, inote * 2, 8, 5 * k1
-a4	butterlp 	a1/2 + a3/4, inote
-;a3	butterlp 	a1, inote
-a5	nreverb 	a4, inote/1000, 0.1 + k1
-	out	(a5+a1)/2
+a4 	flanger 	a3, a1 * 2, k1 * 0.1
+a5	butterlp 	a1/2 + a4/8, inote
+a6	nreverb 	a5, inote/1000, 0.1 + k1
+	out	(a6+a1)/2
 	
 endin
 
@@ -34,10 +34,10 @@ k1	oscil	0.1, inote/1000
 a1	oscil 	0.05, inote
 a2	distort 	a1, 0.1 + k1, 1
 a3 	exciter 	(a2+a1)/2, inote/2, inote * 2, 8, 5 * k1
-a4	butterlp 	a1/2 + a3/4, inote
-;a3	butterlp 	a1, inote
-a5	nreverb 	a4, inote/1000, 0.1 + k1
-	out	(a5+a1)/2
+a4 	flanger 	a3, a1 * 2, k1 * 0.1
+a5	butterlp 	a1/2 + a4/8, inote
+a6	nreverb 	a5, inote/1000, 0.1 + k1
+	out	(a6+a1)/2
 	
 endin
 
@@ -49,10 +49,10 @@ k1	oscil	0.1, inote/1000
 a1	oscil 	0.05, inote
 a2	distort 	a1, 0.1 + k1, 1
 a3 	exciter 	(a2+a1)/2, inote/2, inote * 2, 8, 5 * k1
-a4	butterlp 	a1/2 + a3/4, inote
-;a3	butterlp 	a1, inote
-a5	nreverb 	a4, inote/1000, 0.1 + k1
-	out	(a5+a1)/2
+a4 	flanger 	a3, a1 * 2, k1 * 0.1
+a5	butterlp 	a1/2 + a4/8, inote
+a6	nreverb 	a5, inote/1000, 0.1 + k1
+	out	(a6+a1)/2
 	
 endin
 
@@ -64,10 +64,10 @@ k1	oscil	0.1, inote/1000
 a1	oscil 	0.05, inote
 a2	distort 	a1, 0.1 + k1, 1
 a3 	exciter 	(a2+a1)/2, inote/2, inote * 2, 8, 5 * k1
-a4	butterlp 	a1/2 + a3/4, inote
-;a3	butterlp 	a1, inote
-a5	nreverb 	a4, inote/1000, 0.1 + k1
-	out	(a5+a1)/2
+a4 	flanger 	a3, a1 * 2, k1 * 0.1
+a5	butterlp 	a1/2 + a4/8, inote
+a6	nreverb 	a5, inote/1000, 0.1 + k1
+	out	(a6+a1)/2
 	
 endin
 
