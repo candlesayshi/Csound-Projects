@@ -2,9 +2,9 @@ Mover[] movers;
 csdWriter csd;
 
 // music source settings
-int octaves = 4; // the number of octaves above the root that the scale will extend to
-float root = random(55.0,210.0); // randomly picks a root pitch, generates the scale from this in setup
-float song_length = 249; // the length of the piece in seconds
+int octaves = 5;
+float root = random(120.0,240.0);
+float song_length = 249;
 float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic
 
 
@@ -41,7 +41,7 @@ void setup(){
   
   for(int i = 1; i <= movers.length; i++){
     csd.new_instr(i);
-    csd.grav_instr(i,movers[i-1].freq,movers.length);
+    csd.grav_instr(i,movers[i-1].freq);
     csd.end_instr();
   }
   
@@ -54,7 +54,7 @@ void setup(){
   csd.end_orc();
   
   csd.start_score();
-  //csd.GEN10(2048);
+  csd.GEN10(8192);
   csd.add_oscs_to_score(movers.length,song_length);
 }
 
@@ -369,7 +369,7 @@ class csdWriter {
   // end and finish the file
   void end_writer(){
     if(score_written){
-      csd.println("</CsoundSynthesizer");
+      csd.println("</CsoundSynthesizer>");
       csd.flush();
       csd.close();
     } else {
@@ -386,22 +386,25 @@ class csdWriter {
     }
     csd.println();
   }
-  void grav_instr(int num, float freq, int len){
+  void grav_instr(int num, float freq){
     if(inst_in_progress){
       csd.println("k1 oscil 0.1, " + (freq/1000.0));
       csd.println("a1 oscil " + "gk" + num +", " + freq);
-      //csd.println("a2 distort a1, (0.1 + k1) * (" + num + " / " + len + "), 1");
-      csd.println("a3 butterlp a1, " + (freq/2.0));
-      csd.println("a4 nreverb a3, " + (freq/1000.0) + ", 0.1 + k1");
-      csd.println("  out (a4 + a1) / 2.0");
+      csd.println("a2 distort a1, (0.1 + k1), 1");
+      csd.println("a3 exciter (a2+a1)/2.0, " + (freq/2.0) + ", " + (freq*2.0) + ", 8.0, 5.0 * k1");
+      csd.println("a4 flanger a3, a1 * 2.0, k1 * 0.1");
+      csd.println("a5 butterlp a1/2.0 + a4/8.0, " + (freq * (3.0/2.0)));
+      csd.println("a6 nreverb a5, " + (freq/1000.0) + ", 0.1 + k1");
+      csd.println("  out (a6 + a1) / 2.0");
       csd.println();
     } else {
       println("You have to start an instrument first.");
     }
   }
   void GEN10(int table){
-    csd.println("f1 0 " + table + " 10 1");
-    //csd.println("f1 0 " + table + " 10 1 0 0.3 0 0.2");
+    //csd.println("f1 0 " + table + " 10 1");
+    csd.println(";function table for waveshaping distortion");
+    csd.println("f1 0 " + table + " 10 1 0 0.3 0 0.2");
   }
   void simple_drone_oscs(int num, float freq){
     if(inst_in_progress){
