@@ -1,6 +1,6 @@
 # csdwriter_class
 
-A class made for Processing to make it easier for me to write Csound documents from sketches. Many functions are and will likely be very specific to what I use it for, I'll note it as *specific* if it was made for a single or narrow purpose I needed at a time, and will likely be deleted from this document and the class when I complete the project.
+A class made for Processing to make it easier for me to write Csound documents from sketches. Often many functions are added that will likely be very specific to what I use it for. If they are in this list, I'll note it as *specific* if it was made for a single or narrow purpose I needed at a time, and will likely be deleted from this document and the class at a later time.
 
 Of course, to write a workable .csd the functions have to by triggered in a specific order. Some functions will make sure that it's in the correct section, but not all of them do. So, keep that in mind for now.
 
@@ -12,10 +12,6 @@ Of course, to write a workable .csd the functions have to by triggered in a spec
 
 **csdWriter(String filename)** - the constructor: the filename is just the preferred name of the file that you would like.
 	The .csd extension is added automatically.
-
-**add_oscs_to_score(int num, float length)** - (*specific*) adds a series of droning oscilators to a score
-
-**control_inst(int num)** - (*specific*) Sets up a instrument to control global parameters
 
 **end_instr()** - ends an instrument section
 	
@@ -35,12 +31,6 @@ Of course, to write a workable .csd the functions have to by triggered in a spec
 	(default: 10)
 
 **set_sample_rate(int srate)** - set the sample rate (default: 44.1 kHz) Must be used before start_orc()
-
-**simple_drone_oscs(int num, float freq)** - (*specific*) adds a simple droning oscillator instrument
-
-**simple_oscil_for_test()** - (*specific*) writes a simple oscillator in an instrument section. It will check to make sure it's in an instrument section.
-
-**simple_oscs_gk(int len)** - (*specific*) Creates a number of global audio outputs.
 
 **start_orc()** - starts the orchestra section of the file and writes the global parameters. Set global parameters manually before this,
 	using set_channels() and set_sample_rate() if you want them to be different than the defaults.
