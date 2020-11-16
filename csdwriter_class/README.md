@@ -2,11 +2,11 @@
 
 A class made for Processing to make it easier for me to write Csound documents from sketches. Often many functions are added that will likely be very specific to what I use it for. If they are in this list, I'll note it as *specific* if it was made for a single or narrow purpose I needed at a time, and will likely be deleted from this document and the class at a later time.
 
-Of course, to write a workable .csd the functions have to by triggered in a specific order. Some functions will make sure that it's in the correct section, but not all of them do. So, keep that in mind for now.
+Of course, to write a workable .csd the functions have to be triggered in a specific order. Some functions will make sure that it's in the correct section, but not all of them do. So, keep that in mind for now.
 
 ### Ideas
 
-- make a new class for Instruments themselves and make a function that can call an instrument to insert it into a score (perhaps by loading it from a text file?)
+- make a new class for Instruments themselves and make a function that can call an instrument to insert it into the orchestra (perhaps by loading it from a text file?)
 
 - maybe refine the score statement function to get the instrument number, trigger time, and duration separately rather than hold everything in the parameter array (alternately, a function to fill that array)
 
