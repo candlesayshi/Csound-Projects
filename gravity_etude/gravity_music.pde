@@ -4,9 +4,13 @@ csdWriter csd;
 // music source settings
 int octaves = 5;
 float root = random(120.0,240.0);
-float song_length = 249;
-float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic
+float song_length = random(180.0,390.0);
 
+float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic minor
+//float[] notes = {(1.0),(9.0/8.0),(81.0/64.0),(3.0/2.0),(27.0/16.0)}; // Pythagorean pentatonic major
+//float[] notes = {(1.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(9.0/5.0)}; // five-limit pentatonic minor
+//float[] notes = {(1.0),(9.0/8.0),(5.0/4.0),(3.0/2.0),(5.0/3.0)}; // five-limit pentatonic major
+//float[] notes = {(1.0),(9.0/8.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(8.0/5.0),(9.0/5.0)}; // five-limit natural minor
 
 boolean debug = false, valdisp = false, reflect = false, make_vid = true;
 int curcount = 0;
@@ -32,7 +36,7 @@ void setup(){
   csd = new csdWriter("gravity-etude");
   csd.set_channels(1);
   csd.set_ksmps(1470);
-  csd.new_option("-3");
+  //csd.new_option("-3"); // for 24-bit out
   csd.write_options();
   csd.start_orc();
   
@@ -90,7 +94,7 @@ void draw(){
   // write that score statement
   csd.write_score_statement(score_line);
   
-  if(make_vid) saveFrame("frames/screen-####.png");
+  if(make_vid) saveFrame("frames/####.png");
   
   if(frameCount/30.0 > song_length){
     end_it_all();
