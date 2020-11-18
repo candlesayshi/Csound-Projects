@@ -2,24 +2,32 @@ Mover[] movers;
 csdWriter csd;
 
 // music source settings
-int octaves = 5;
+int octaves = int(random(4,8));
 float root = random(120.0,240.0);
 float song_length = random(180.0,390.0);
-
-float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic minor
+//float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic minor
 //float[] notes = {(1.0),(9.0/8.0),(81.0/64.0),(3.0/2.0),(27.0/16.0)}; // Pythagorean pentatonic major
 //float[] notes = {(1.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(9.0/5.0)}; // five-limit pentatonic minor
 //float[] notes = {(1.0),(9.0/8.0),(5.0/4.0),(3.0/2.0),(5.0/3.0)}; // five-limit pentatonic major
-//float[] notes = {(1.0),(9.0/8.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(8.0/5.0),(9.0/5.0)}; // five-limit natural minor
+float[] notes = {(1.0),(9.0/8.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(8.0/5.0),(9.0/5.0)}; // five-limit natural minor
 
-boolean debug = false, valdisp = false, reflect = false, make_vid = true;
+while(root * octaves * notes[notes.length - 1] > 20000.0) octaves--;
+
+boolean debug = false, valdisp = false, reflect = false, make_vid = false, fade = false; // various flags for debug and control
 int curcount = 0;
+
+float hue_root = random(360), bg_root; // for coloring the tone movers
 
 void setup(){
   //size(1280,1024);
   fullScreen();
-  background(#393c4f);
   colorMode(HSB,360,100,100);
+  if(hue_root > 180){
+    bg_root = hue_root - 180;
+  } else {
+    bg_root = hue_root + 180;
+  }
+  background(bg_root,23,17);
   frameRate(30);
   
   // setting up the objects
@@ -107,6 +115,12 @@ void keyPressed(){
     csd.end_writer();
     exit();
   }
+  if(key == ENTER){
+    saveFrame("frames/screen-####.png");
+  }
+  if(key == 'f'){
+    fade = !fade;
+  }
 }
 
 void end_it_all(){
@@ -123,7 +137,8 @@ class Mover {
   PVector acceleration;
   float topspeed;
   float mass, size, radius, G;
-  color hue;
+  float hue, sat, bri;
+  float fillalph, linealph, falst, lalst;
   
   // debug values
   float low, high, val;
@@ -139,14 +154,23 @@ class Mover {
     G = 0.4;
     size = mass * 16;
     radius = size/2.0;
-    topspeed = 16.0;
+    topspeed = width/2.0;
     gravVal = 0.0;
     freq = f;
     low = (G * mass * 6.0) / sq(1.6);
     high = (G * mass * 0.2) / sq(width/2.0);
-    //topspeed = sqrt((2.0 * G * mass) / radius); // an escape velocity equation
-    topspeed = radius;
-    hue = color(351,random(70,94),random(50,99));
+    
+    // color
+    hue = hue_root;
+    sat = random(70,94);
+    bri = random(50,99);
+    
+    // alpha values
+    falst = random(150,220);
+    lalst = random(220,225);
+    fillalph = falst;
+    linealph = lalst;
+    
   }
   
   void applyForce(PVector force){
@@ -177,10 +201,20 @@ class Mover {
   }
   
   void display(){
-    fill(hue);
-    stroke(#43262a,80);
-    //noStroke();
+    fill(hue,sat,bri,fillalph);
+    stroke(hue,sat,bri/2.0,linealph);
     ellipse(location.x,location.y,size,size);
+    if(fade){
+      fillalph -= 0.5;
+      linealph -= 0.25;
+    } else {
+      if(fillalph < falst){
+        fillalph += 0.25;
+      }
+      if(linealph < lalst){
+        linealph += 0.5;
+      }
+    }
     if(valdisp){
       fill(255);
       textAlign(CENTER,CENTER);
