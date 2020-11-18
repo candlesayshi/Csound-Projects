@@ -2,16 +2,17 @@ Mover[] movers;
 csdWriter csd;
 
 // music source settings
-int octaves = int(random(4,8));
+int octaves = int(random(4,9));
 float root = random(120.0,240.0);
 float song_length = random(180.0,390.0);
-//float[] notes = {(1.0),(32.0/27.0),(4.0/3.0),(3.0/2.0),(16.0/9.0)}; // Pythagorean pentatonic minor
-//float[] notes = {(1.0),(9.0/8.0),(81.0/64.0),(3.0/2.0),(27.0/16.0)}; // Pythagorean pentatonic major
-//float[] notes = {(1.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(9.0/5.0)}; // five-limit pentatonic minor
-//float[] notes = {(1.0),(9.0/8.0),(5.0/4.0),(3.0/2.0),(5.0/3.0)}; // five-limit pentatonic major
-float[] notes = {(1.0),(9.0/8.0),(6.0/5.0),(4.0/3.0),(3.0/2.0),(8.0/5.0),(9.0/5.0)}; // five-limit natural minor
 
-while(root * octaves * notes[notes.length - 1] > 20000.0) octaves--;
+float[] notes = getScale(2,0,1);
+/* 
+arguments (int) : tuning, degrees, quality
+tuning: 0 = 12TET, 1 = 5-limit, 2 = Pythagorean
+degrees: 0 = pentatonic, 1 = diatonic
+quality: 0 = major, 1 = minor
+*/
 
 boolean debug = false, valdisp = false, reflect = false, make_vid = false, fade = false; // various flags for debug and control
 int curcount = 0;
@@ -29,6 +30,9 @@ void setup(){
   }
   background(bg_root,23,17);
   frameRate(30);
+  
+  // set the number of octaves
+  while(root * octaves * notes[notes.length - 1] > 10000.0) octaves--;
   
   // setting up the objects
   movers = new Mover[octaves * notes.length];
@@ -128,6 +132,85 @@ void end_it_all(){
   csd.end_writer();
   exit();
 }
+
+/********************** scale function **********************/
+float[] getScale(int tuning, int degrees, int quality){
+  
+  float[] scale = new float[0];
+  float[] ratios = new float[12];
+  
+  if(tuning < 0 || tuning > 2){
+    println("Error on tuning switch.");
+    exit();
+  }
+  if(degrees < 0 || degrees > 1){
+    println("Error on degrees switch");
+    exit();
+  }
+  if(quality < 0 || quality > 1){
+    println("Error on quality switch");
+    exit();
+  }
+  
+  if(tuning == 0){
+    // 12-tone equal temperament
+    for(int i = 0; i < ratios.length; i++){
+      ratios[i] = pow(2.0,float(i)/12.0);
+    }
+  } else if (tuning == 1){
+    // 5-limit tuning
+    float[] temp = {(1.0),(16.0/15.0),(9.0/8.0),(6.0/5.0),(5.0/4.0),(4.0/3.0),(64/0/45.0),(3.0/2.0),(5.0/3.0),(9.0/5.0),(15.0/8.0)};
+    ratios = temp;
+  } else if  (tuning == 2){
+    // Pythagorean Tuning
+    float[] temp = {(1.0),(256.0/243.0),(9.0/8.0),(32.0/27.0),(81.0/64.0),(4.0/3.0),(1024.0/729.0),(3.0/2.0),(128.0/81.0),(27.0/16.0),(16.0/9.0),(243.0/128.0)};
+    ratios = temp;
+  }
+  
+  if(degrees == 0){
+    // pentatonic
+    scale = new float[5];
+    if(quality == 0){
+      // major
+      scale[0] = ratios[0];
+      scale[1] = ratios[2];
+      scale[2] = ratios[4];
+      scale[3] = ratios[7];
+      scale[4] = ratios[9];
+    } else if (quality == 1){
+      // minor
+      scale[0] = ratios[0];
+      scale[1] = ratios[3];
+      scale[2] = ratios[5];
+      scale[3] = ratios[7];
+      scale[4] = ratios[10];
+    }
+  } else if (degrees == 1){
+    // diatonic
+    scale = new float[7];
+    if(quality == 0){
+      // major
+      scale[0] = ratios[0];
+      scale[1] = ratios[2];
+      scale[2] = ratios[4];
+      scale[3] = ratios[5];
+      scale[4] = ratios[7];
+      scale[5] = ratios[9];
+      scale[6] = ratios[11];
+    } else if (quality == 1){
+      // minor
+      scale[0] = ratios[0];
+      scale[1] = ratios[2];
+      scale[2] = ratios[3];
+      scale[3] = ratios[5];
+      scale[4] = ratios[7];
+      scale[5] = ratios[8];
+      scale[6] = ratios[10];
+    }
+  }
+  return scale;
+}
+
 
 /*********************** CLASSES ****************************/
 
