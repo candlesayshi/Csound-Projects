@@ -6,7 +6,7 @@ int octaves = int(random(4,9));
 float root = random(120.0,240.0);
 float song_length = random(180.0,390.0);
 
-float[] notes = getScale(2,0,1);
+float[] notes = getScale(1,0,0);
 /* 
 arguments (int) : tuning, degrees, quality
 tuning: 0 = 12TET, 1 = 5-limit, 2 = Pythagorean
@@ -75,8 +75,6 @@ void setup(){
 }
 
 void draw(){
-  fill(#393c4f,0);
-  rect(0,0,width,height);
   //background(#2e4340);
   for(int i = 0; i < movers.length; i++){
     for(int j = 0; j < movers.length; j++){
@@ -159,7 +157,7 @@ float[] getScale(int tuning, int degrees, int quality){
     }
   } else if (tuning == 1){
     // 5-limit tuning
-    float[] temp = {(1.0),(16.0/15.0),(9.0/8.0),(6.0/5.0),(5.0/4.0),(4.0/3.0),(64/0/45.0),(3.0/2.0),(5.0/3.0),(9.0/5.0),(15.0/8.0)};
+    float[] temp = {(1.0),(16.0/15.0),(9.0/8.0),(6.0/5.0),(5.0/4.0),(4.0/3.0),(64.0/45.0),(3.0/2.0),(5.0/3.0),(9.0/5.0),(15.0/8.0)};
     ratios = temp;
   } else if  (tuning == 2){
     // Pythagorean Tuning
