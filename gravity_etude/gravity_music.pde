@@ -235,8 +235,6 @@ class Mover {
     topspeed = width/2.0;
     gravVal = 0.0;
     freq = f;
-    low = (G * mass * 6.0) / sq(1.6);
-    high = (G * mass * 0.2) / sq(width/2.0);
     
     // color
     hue = hue_root;
