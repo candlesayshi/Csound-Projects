@@ -255,9 +255,6 @@ class Mover {
   }
   
   void update(){
-    val = acceleration.mag();
-    low = low < val ? low : val;
-    high = high > val ? high : val;
     velocity.add(acceleration);
     location.add(velocity);
     velocity.limit(topspeed);
