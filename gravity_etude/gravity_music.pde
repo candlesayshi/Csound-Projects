@@ -14,8 +14,9 @@ degrees: 0 = pentatonic, 1 = diatonic
 quality: 0 = major, 1 = minor
 */
 
-boolean debug = false, valdisp = false, reflect = false, make_vid = false, fade = false; // various flags for debug and control
-int curcount = 0;
+boolean reflect = false; // will cause movers to bounce off the edges of the display
+boolean make_vid = false; // saves an image of every frame for the sources to make a video
+boolean fade = false; // controls the transparency transition of the movers
 
 float hue_root = random(360), bg_root; // for coloring the tone movers
 
@@ -83,7 +84,6 @@ void draw(){
         movers[i].applyForce(force);
       }
     }
-    if(valdisp) curcount = i;
     movers[i].update();
     movers[i].display();
   }
@@ -221,9 +221,6 @@ class Mover {
   float hue, sat, bri;
   float fillalph, linealph, falst, lalst;
   
-  // debug values
-  float low, high, val;
-  
   float gravVal, freq;
   
   Mover(float m,float x,float y,float f){
@@ -295,15 +292,6 @@ class Mover {
       if(linealph < lalst){
         linealph += 0.5;
       }
-    }
-    if(valdisp){
-      fill(255);
-      textAlign(CENTER,CENTER);
-      text(nf(curcount,1,0),location.x,location.y);
-      textAlign(CENTER,BOTTOM);
-      text(nf(high,1,8),location.x,location.y - radius);
-      textAlign(CENTER,TOP);
-      text(nf(low,1,8),location.x,location.y + radius);
     }
   }
   
